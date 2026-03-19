@@ -664,7 +664,7 @@
     </div>
 
     <div class="video-container">
-      <video id="cake-video" controls playsinline
+      <video id="cake-video" controls playsinline onplay="pauseMusicForVideo()" onpause="resumeMusicAfterVideo()" onended="resumeMusicAfterVideo()"
         style="width:100%;border-radius:16px;display:block;">
         <source src="12_Am_Birthday_Manny.mp4" type="video/mp4">
         Your browser does not support video.
@@ -684,6 +684,12 @@
 function stopVideo() {
   const v = document.getElementById('cake-video');
   if (v) { v.pause(); v.currentTime = 0; }
+}
+function pauseMusicForVideo() {
+  if (musicOn) { audio.pause(); }
+}
+function resumeMusicAfterVideo() {
+  if (musicOn) { audio.play().catch(() => {}); }
 }
 
 // ---- Navigation ----
