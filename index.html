@@ -718,22 +718,24 @@ window.addEventListener('popstate', function(e) {
 
 // ---- Music ----
 let musicOn = false;
+let musicStarted = false;
 const audio = document.getElementById('bg-music');
 const btn = document.getElementById('music-toggle');
 
-// Auto-play on first user interaction
 function startMusicOnce(e) {
   if (e.target === btn) return;
-  if (!musicOn) {
-    audio.load();
-    audio.play().then(() => {
-      btn.textContent = '🔇';
-      musicOn = true;
-    }).catch(() => {});
-  }
+  if (musicStarted) return;
+  musicStarted = true;
   document.removeEventListener('click', startMusicOnce);
   document.removeEventListener('touchstart', startMusicOnce);
+  audio.play().then(() => {
+    btn.textContent = '🔇';
+    musicOn = true;
+  }).catch(() => { musicStarted = false; });
 }
+document.addEventListener('click', startMusicOnce);
+document.addEventListener('touchstart', startMusicOnce);
+
 function toggleMusic() {
   if (musicOn) {
     audio.pause();
