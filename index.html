@@ -464,11 +464,101 @@
     100% { transform: translateY(100vh) rotate(720deg) translateX(var(--drift, 0px)); opacity: 0; }
   }
 
-  /* Responsive */
-  @media (max-width: 600px) {
-    .btn-row { gap: 14px; }
-    .action-btn { width: 148px; min-height: 96px; }
-    .gift-card { width: 165px; height: 180px; }
+  /* ============ RESPONSIVE ============ */
+
+  /* --- Desktop: postcard centered with padding --- */
+  @media (min-width: 769px) {
+    #page-postcard {
+      display: flex; flex-direction: column;
+      align-items: center;
+      padding: 40px 40px 60px;
+    }
+    .postcard-wrap {
+      width: 100%;
+      max-width: 600px;
+    }
+    .back-btn { align-self: flex-start; }
+    .page-heading, .page-sub { width: 100%; text-align: center; }
+
+    #page-gifts {
+      display: flex; flex-direction: column;
+      align-items: center;
+      padding: 40px 40px 60px;
+    }
+    #page-gifts .back-btn { align-self: flex-start; }
+
+    #page-cake {
+      display: flex; flex-direction: column;
+      align-items: center;
+      padding: 40px 40px 60px;
+    }
+    #page-cake .back-btn { align-self: flex-start; }
+
+    /* Flowers: constrain to viewport, no overflow */
+    .floral-field {
+      overflow: hidden;
+      max-width: 100vw;
+    }
+
+    /* Buttons: all 3 in one row on desktop */
+    .btn-row {
+      flex-wrap: nowrap;
+      gap: 20px;
+    }
+    .action-btn {
+      width: 170px;
+    }
+  }
+
+  /* --- Tablet --- */
+  @media (min-width: 481px) and (max-width: 768px) {
+    .btn-row { flex-wrap: wrap; gap: 16px; }
+    .action-btn { width: 160px; min-height: 100px; }
+    .gift-card { width: 185px; height: 200px; }
+    .floral-field { overflow: hidden; }
+  }
+
+  /* --- Mobile --- */
+  @media (max-width: 480px) {
+    /* Flowers: fixed positions become % of screen, clipped */
+    .floral-field {
+      overflow: hidden;
+      height: 90px !important;
+    }
+    /* Flowers near edges get pulled inward */
+    .flower[style*="left:3%"]  { left: 2% !important; }
+    .flower[style*="right:5%"] { right: 2% !important; }
+    .flower[style*="right:20%"]{ right: 16% !important; }
+
+    /* Shrink flowers on mobile */
+    .flower { transform-origin: bottom center; }
+
+    /* Buttons: 2x1 + 1 centered */
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: min(360px, 92vw);
+    }
+    .btn-row .action-btn:last-child {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+    .action-btn {
+      width: 100%; min-height: 88px;
+    }
+
+    /* Postcard full width */
+    .postcard-wrap { padding: 0 4px; }
+    .postcard { padding: 20px 16px 18px; }
+
+    /* Gift cards 2-column grid */
+    .gifts-grid { gap: 14px; }
+    .gift-card { width: 155px; height: 170px; }
+
+    /* Tulip border wrap tightly */
+    .tulip-border { font-size: 1.2rem; gap: 6px; padding: 10px 8px 0; }
+    .flowers-row  { font-size: 1.2rem; gap: 6px; margin-top: 20px; padding: 0 8px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
