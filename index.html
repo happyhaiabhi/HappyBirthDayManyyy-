@@ -234,12 +234,6 @@
     from { opacity: 0; } to { opacity: 1; }
   }
 
-  /* ============ PAGE 2: POSTCARD ============ */
-  #page-postcard {
-    background: linear-gradient(135deg, #FFF8F0, #F0E0FF, #FFF0F8);
-    padding: 20px;
-    min-height: 100vh;
-  }
 
   /* ============ PAGE 3: GIFTS ============ */
   #page-gifts {
@@ -273,95 +267,7 @@
     text-align: center; margin-bottom: 28px;
   }
 
-  /* ---- POSTCARD ---- */
-  .postcard-wrap {
-    max-width: 640px; margin: 0 auto;
-    animation: slideUp 0.7s ease both;
-  }
-
-  .postcard {
-    background: #FFFDF7;
-    border: 2px solid rgba(155,89,182,0.35);
-    border-radius: 12px;
-    padding: 28px 28px 24px;
-    position: relative;
-    box-shadow: 0 6px 30px rgba(155,89,182,0.18), inset 0 0 60px rgba(255,240,255,0.5);
-    min-height: 300px;
-  }
-
-  /* Ornamental corners */
-  .postcard::before, .postcard::after {
-    content: '❀';
-    position: absolute; font-size: 1.4rem;
-    color: rgba(155,89,182,0.4);
-  }
-  .postcard::before { top: 10px; left: 14px; }
-  .postcard::after  { bottom: 10px; right: 14px; }
-
-  .postcard-stamp {
-    position: absolute; top: 14px; right: 14px;
-    width: 52px; height: 64px;
-    border: 2.5px solid #C090D0;
-    border-radius: 4px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    font-size: 1.4rem;
-    background: linear-gradient(135deg, #F8E8FF, #FFE8F8);
-    box-shadow: inset 0 0 0 3px rgba(255,255,255,0.8);
-  }
-  .postcard-stamp::after {
-    content: '🇮🇳'; font-size: 0.5rem;
-    color: var(--text-secondary);
-  }
-
-  .postcard-dear {
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.2rem; color: var(--text-primary);
-    margin-bottom: 10px; margin-top: 6px;
-  }
-
-  #postcard-text {
-    width: 100%;
-    min-height: 140px;
-    border: none; outline: none;
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.15rem; color: var(--text-primary);
-    background: transparent; resize: none;
-    line-height: 1.7;
-  }
-
-  .postcard-sign {
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.1rem; color: var(--text-secondary);
-    margin-top: 10px;
-  }
-
-  #char-count {
-    text-align: right; font-size: 0.78rem;
-    color: var(--text-secondary); margin-top: 8px;
-  }
-
-  #char-count.over { color: #E74C3C; }
-
-  .send-btn {
-    display: block; margin: 20px auto 0;
-    padding: 14px 40px;
-    background: linear-gradient(135deg, #C060C0, #9B59B6);
-    color: #fff; border: none; border-radius: 50px;
-    font-family: 'Quicksand'; font-weight: 700;
-    font-size: 1.05rem; cursor: pointer;
-    box-shadow: 0 4px 18px rgba(155,89,182,0.4);
-    transition: all 0.3s; position: relative; overflow: hidden;
-  }
-  .send-btn:hover { transform: scale(1.05); box-shadow: 0 6px 24px rgba(155,89,182,0.6); }
-  .send-btn:active { transform: scale(0.97); }
-
-  .sent-msg {
-    text-align: center; margin-top: 16px;
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.3rem; color: #9B59B6;
-    display: none;
-  }
+ 
 
   /* ---- GIFTS ---- */
   .gifts-grid {
@@ -525,7 +431,7 @@
 <!-- Hidden audio (looping ambient music via a royalty-free URL placeholder) -->
 <audio id="bg-music" loop>
   <!-- Replace src with your own music file or a royalty-free URL -->
-  <source src="https://www.bensound.com/bensound-music/bensound-buddy.mp3" type="audio/mpeg">
+<source src="Rainy_Days.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ===================== PAGE 1: HOME ===================== -->
@@ -614,11 +520,6 @@
 
   <!-- Buttons -->
   <div class="btn-row">
-    <button class="action-btn" onclick="goTo('page-postcard')">
-      <span class="btn-icon">✉️</span>
-      <span class="btn-label">Write a Postcard</span>
-      <span class="btn-sub">Send your wishes</span>
-    </button>
     <button class="action-btn" onclick="goTo('page-gifts')">
       <span class="btn-icon">🎁</span>
       <span class="btn-label">Open Gifts</span>
@@ -637,30 +538,6 @@
   </div>
 </div>
 
-<!-- ===================== PAGE 2: POSTCARD ===================== -->
-<div id="page-postcard" class="page">
-  <button class="back-btn" onclick="goTo('page-home')">← Back</button>
-
-  <div class="page-heading">Write a Postcard 💌</div>
-  <div class="page-sub">Pour your heart out, one petal at a time</div>
-
-  <div class="postcard-wrap">
-    <div class="postcard">
-      <div class="postcard-stamp">🌷</div>
-      <div class="postcard-dear">Dear <span id="pc-name">Your Friend</span>,</div>
-      <textarea id="postcard-text" maxlength="400"
-        placeholder="Write your heartfelt message here... 🌸"
-        oninput="updateCharCount()"></textarea>
-      <div class="postcard-sign">With love, 💜</div>
-    </div>
-    <div id="char-count">0 / 400</div>
-
-    <button class="send-btn" onclick="sendPostcard()">✨ Send Wishes ✨</button>
-    <div class="sent-msg" id="sent-msg">💌 Your wishes have been sent with love! 🌷</div>
-  </div>
-
-  <div class="flowers-row">🌷 🌸 🌼 🌷 🌸 🌼 🌷 🌸 🌼 🌷</div>
-</div>
 
 <!-- ===================== PAGE 3: GIFTS ===================== -->
 <div id="page-gifts" class="page">
@@ -838,36 +715,6 @@ function flipGift(card) {
   card.classList.toggle('flipped');
 }
 
-// ---- Postcard char count ----
-function updateCharCount() {
-  const ta = document.getElementById('postcard-text');
-  const cc = document.getElementById('char-count');
-  const len = ta.value.length;
-  cc.textContent = len + ' / 400';
-  cc.classList.toggle('over', len >= 390);
-  // autosave
-  localStorage.setItem('birthdayPostcard', ta.value);
-}
-
-// Restore saved text
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('birthdayPostcard');
-  if (saved) {
-    document.getElementById('postcard-text').value = saved;
-    updateCharCount();
-  }
-});
-
-// ---- Send postcard with confetti ----
-function sendPostcard() {
-  launchConfetti(120);
-  const msg = document.getElementById('sent-msg');
-  msg.style.display = 'block';
-  const sendBtn = document.querySelector('.send-btn');
-  sendBtn.textContent = '💌 Sent!';
-  sendBtn.disabled = true;
-  sendBtn.style.opacity = '0.7';
-}
 
 // ---- Confetti ----
 function launchConfetti(count) {
