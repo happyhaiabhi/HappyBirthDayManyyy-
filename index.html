@@ -374,7 +374,14 @@
   @media (max-width: 600px) {
     .btn-row { gap: 14px; }
     .action-btn { width: 148px; min-height: 96px; }
-    .gift-card { width: 165px; height: 180px; }
+    .gifts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+    .gift-card { width: 100%; height: 170px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -534,7 +541,7 @@
 
   <!-- Bottom tulip border -->
   <div class="tulip-border">
-    🌷🌸🌼🌷🌸🌼🌷🌸🌼🌷🌸🌼🌷
+    🌷🌸🌼🌷🌸🌼🌷🌸🌼🌷
   </div>
 </div>
 
@@ -697,7 +704,17 @@ function goTo(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
   window.scrollTo(0, 0);
+  history.pushState({ page: pageId }, '', '');
 }
+
+// Handle phone hardware back button
+window.addEventListener('popstate', function(e) {
+  const activePage = document.querySelector('.page.active');
+  if (activePage && activePage.id !== 'page-home') {
+    stopVideo();
+    goTo('page-home');
+  }
+});
 
 // ---- Music ----
 let musicOn = false;
@@ -707,15 +724,15 @@ const btn = document.getElementById('music-toggle');
 // Auto-play on first user interaction
 function startMusicOnce() {
   if (!musicOn) {
-    audio.play().catch(() => {});
-    btn.textContent = '🔇';
-    musicOn = true;
+    audio.load();
+    audio.play().then(() => {
+      btn.textContent = '🔇';
+      musicOn = true;
+    }).catch(() => {});
   }
   document.removeEventListener('click', startMusicOnce);
   document.removeEventListener('touchstart', startMusicOnce);
 }
-document.addEventListener('click', startMusicOnce);
-document.addEventListener('touchstart', startMusicOnce);
 
 function toggleMusic() {
   if (musicOn) {
