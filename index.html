@@ -239,6 +239,9 @@
     background: linear-gradient(135deg, #FFF8F0, #F0E0FF, #FFF0F8);
     padding: 20px;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   /* ============ PAGE 3: GIFTS ============ */
@@ -250,6 +253,7 @@
 
   /* Back button */
   .back-btn {
+    align-self: flex-start;
     display: inline-flex; align-items: center; gap: 6px;
     background: rgba(155,89,182,0.12);
     border: 1.5px solid rgba(155,89,182,0.35);
@@ -275,7 +279,7 @@
 
   /* ---- POSTCARD ---- */
   .postcard-wrap {
-    max-width: 640px; margin: 0 auto;
+    width: min(640px, 92vw); margin: 0 auto;
     animation: slideUp 0.7s ease both;
   }
 
@@ -603,6 +607,29 @@
     animation: fadeIn 1s ease 0.6s both;
   }
 
+
+  /* ---- TYPEWRITER ---- */
+  .typewriter-body {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    line-height: 1.8;
+    min-height: 130px;
+    padding: 4px 0 8px;
+  }
+  .typewriter-body .tw-cursor {
+    display: inline-block;
+    width: 2px; height: 1.1em;
+    background: #9B59B6;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blinkCursor 0.7s step-end infinite;
+  }
+  @keyframes blinkCursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
 </style>
 </head>
 <body>
@@ -738,14 +765,11 @@
     <div class="postcard">
       <div class="postcard-stamp">🌷</div>
       <div class="postcard-dear">Dear <span id="pc-name">Your Friend</span>,</div>
-      <textarea id="postcard-text" maxlength="400"
-        placeholder="Write your heartfelt message here... 🌸"
-        oninput="updateCharCount()"></textarea>
-      <div class="postcard-sign">With love, 💜</div>
+      <div id="typewriter-text" class="typewriter-body"></div>
+      <div class="postcard-sign">With all my love, 💜</div>
     </div>
-    <div id="char-count">0 / 400</div>
 
-    <button class="send-btn" onclick="sendPostcard()">✨ Send Wishes ✨</button>
+    <button class="send-btn" id="send-postcard-btn" onclick="sendPostcard()" style="display:none">Send Wishes</button>
     <div class="sent-msg" id="sent-msg">💌 Your wishes have been sent with love! 🌷</div>
   </div>
 
@@ -766,7 +790,6 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
-          <div class="gift-label">Gift #1</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -782,7 +805,6 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
-          <div class="gift-label">Gift #2</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -798,7 +820,6 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
-          <div class="gift-label">Gift #3</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -814,7 +835,6 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
-          <div class="gift-label">Gift #4</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -830,7 +850,6 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
-          <div class="gift-label">Gift #5</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -846,7 +865,6 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
-          <div class="gift-label">Gift #6</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -904,6 +922,42 @@ function goTo(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
   window.scrollTo(0, 0);
+  if (pageId === 'page-postcard' && !twDone) {
+    twDone = false;
+    setTimeout(runTypewriter, 400);
+  }
+}
+
+// ---- Typewriter ----
+const twMessage = "Today is your day — and I hope it feels as magical as you deserve. Every moment you've made people smile, every time you showed up with kindness and warmth... it all comes back to you today. You are deeply loved, truly special, and this world is so much better with you in it. Happy Birthday, beautiful soul. 🌷";
+
+let twIndex = 0;
+let twDone = false;
+
+function runTypewriter() {
+  const el = document.getElementById('typewriter-text');
+  if (!el) return;
+  el.innerHTML = '';
+  twDone = false;
+  const cursor = document.createElement('span');
+  cursor.className = 'tw-cursor';
+  el.appendChild(cursor);
+  twIndex = 0;
+
+  function typeNext() {
+    if (twIndex < twMessage.length) {
+      cursor.insertAdjacentText('beforebegin', twMessage[twIndex]);
+      twIndex++;
+      const delay = ['.', ',', '—'].includes(twMessage[twIndex - 1]) ? 100 : 36;
+      setTimeout(typeNext, delay);
+    } else {
+      cursor.remove();
+      twDone = true;
+      const btn = document.getElementById('send-postcard-btn');
+      if (btn) { btn.style.display = 'block'; btn.style.animation = 'slideUp 0.5s ease both'; }
+    }
+  }
+  typeNext();
 }
 
 // ---- Music ----
