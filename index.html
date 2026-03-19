@@ -722,7 +722,8 @@ const audio = document.getElementById('bg-music');
 const btn = document.getElementById('music-toggle');
 
 // Auto-play on first user interaction
-function startMusicOnce() {
+function startMusicOnce(e) {
+  if (e.target === btn) return;
   if (!musicOn) {
     audio.load();
     audio.play().then(() => {
@@ -733,7 +734,6 @@ function startMusicOnce() {
   document.removeEventListener('click', startMusicOnce);
   document.removeEventListener('touchstart', startMusicOnce);
 }
-
 function toggleMusic() {
   if (musicOn) {
     audio.pause();
