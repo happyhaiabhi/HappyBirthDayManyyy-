@@ -243,6 +243,10 @@
     flex-direction: column;
     align-items: center;
   }
+  #page-postcard .postcard-wrap { width: min(640px, 92vw); }
+  #page-postcard .back-btn { align-self: flex-start; }
+  #page-postcard .page-heading,
+  #page-postcard .page-sub { text-align: center; width: 100%; }
 
   /* ============ PAGE 3: GIFTS ============ */
   #page-gifts {
@@ -614,8 +618,9 @@
     font-size: 1.1rem;
     color: var(--text-primary);
     line-height: 1.8;
-    min-height: 130px;
+    min-height: 160px;
     padding: 4px 0 8px;
+    word-break: break-word;
   }
   .typewriter-body .tw-cursor {
     display: inline-block;
@@ -639,10 +644,9 @@
 <!-- Music toggle -->
 <button id="music-toggle" title="Toggle music" onclick="toggleMusic()">🎵</button>
 
-<!-- Hidden audio (looping ambient music via a royalty-free URL placeholder) -->
+<!-- Background music -->
 <audio id="bg-music" loop>
-  <!-- Replace src with your own music file or a royalty-free URL -->
-  <source src="https://www.bensound.com/bensound-music/bensound-buddy.mp3" type="audio/mpeg">
+  <source src="Rainy_Days.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ===================== PAGE 1: HOME ===================== -->
@@ -922,9 +926,12 @@ function goTo(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
   window.scrollTo(0, 0);
-  if (pageId === 'page-postcard' && !twDone) {
+  if (pageId === 'page-postcard') {
     twDone = false;
-    setTimeout(runTypewriter, 400);
+    twIndex = 0;
+    const btn = document.getElementById('send-postcard-btn');
+    if (btn) btn.style.display = 'none';
+    setTimeout(runTypewriter, 500);
   }
 }
 
@@ -982,25 +989,8 @@ function flipGift(card) {
   card.classList.toggle('flipped');
 }
 
-// ---- Postcard char count ----
-function updateCharCount() {
-  const ta = document.getElementById('postcard-text');
-  const cc = document.getElementById('char-count');
-  const len = ta.value.length;
-  cc.textContent = len + ' / 400';
-  cc.classList.toggle('over', len >= 390);
-  // autosave
-  localStorage.setItem('birthdayPostcard', ta.value);
-}
-
 // Restore saved text
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('birthdayPostcard');
-  if (saved) {
-    document.getElementById('postcard-text').value = saved;
-    updateCharCount();
-  }
-});
+window.addEventListener('DOMContentLoaded', () => {});
 
 // ---- Send postcard with confetti ----
 function sendPostcard() {
