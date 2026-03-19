@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday! 🌷</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary-purple: #9B59B6;
+    --lavender: #E6E6FA;
+    --light-lavender: #F3E5F5;
+    --tulip-pink: #FFB6C1;
+    --tulip-purple: #DDA0DD;
+    --soft-cream: #FFF8F0;
+    --soft-peach: #FFE5E5;
+    --mint-green: #E8F5E9;
+    --gold-accent: #FFD700;
+    --text-primary: #4A4A4A;
+    --text-secondary: #7B7B7B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, var(--soft-cream) 0%, #F0E6FF 50%, var(--soft-cream) 100%);
+    min-height: 100vh;
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  /* PAGES */
+  .page { display: none; min-height: 100vh; position: relative; }
+  .page.active { display: block; }
+
+  /* ============ PAGE 1: HOME ============ */
+  #page-home {
+    background: linear-gradient(160deg, #FFF8F0 0%, #F5E6FF 40%, #FFF0F8 70%, #FFF8F0 100%);
+    padding: 20px;
+    padding-bottom: 40px;
+  }
+
+  /* Floating confetti particles (hidden until triggered) */
+  #confetti-container {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 9999;
+  }
+
+  /* Music Toggle */
+  #music-toggle {
+    position: fixed; top: 16px; right: 16px;
+    width: 46px; height: 46px;
+    background: rgba(155,89,182,0.15);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(155,89,182,0.4);
+    border-radius: 50%;
+    cursor: pointer; z-index: 999;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(155,89,182,0.2);
+  }
+  #music-toggle:hover { transform: scale(1.1); background: rgba(155,89,182,0.25); }
+
+  /* Floral decorations */
+  .floral-field {
+    position: relative;
+    width: 100%; min-height: 120px;
+    pointer-events: none;
+  }
+
+  .flower {
+    position: absolute;
+    animation: floatSway 4s ease-in-out infinite;
+    cursor: default;
+    transition: transform 0.3s;
+  }
+  .flower:hover { transform: scale(1.15) rotate(5deg) !important; }
+
+  @keyframes floatSway {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50% { transform: translateY(-8px) rotate(calc(var(--r, 0deg) + 3deg)); }
+  }
+
+  /* SVG Tulip */
+  .tulip svg, .lavender svg { width: 100%; height: 100%; }
+
+  /* Central card area */
+  .card-wrap {
+    perspective: 1000px;
+    width: min(420px, 92vw);
+    margin: 10px auto 0;
+  }
+
+  .birthday-card {
+    width: 100%; padding-bottom: 62%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: cardFlip 1s ease-out 0.6s both;
+  }
+
+  @keyframes cardFlip {
+    from { transform: rotateY(180deg) scale(0.8); opacity: 0; }
+    to   { transform: rotateY(0deg) scale(1); opacity: 1; }
+  }
+
+  .card-front {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #fff 0%, #F8EEFF 60%, #FFF0FA 100%);
+    border-radius: 22px;
+    box-shadow: 0 8px 40px rgba(155,89,182,0.22), 0 2px 8px rgba(0,0,0,0.06);
+    border: 2px solid rgba(221,160,221,0.5);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 24px 20px; gap: 8px;
+    overflow: hidden;
+  }
+
+  .card-front::before {
+    content: '';
+    position: absolute; inset: 6px;
+    border: 1.5px dashed rgba(155,89,182,0.2);
+    border-radius: 16px; pointer-events: none;
+  }
+
+  /* Sparkle particles on card */
+  .sparkle {
+    position: absolute; width: 6px; height: 6px;
+    background: var(--gold-accent);
+    border-radius: 50%;
+    animation: sparklePop 2s ease-in-out infinite;
+  }
+  .sparkle:nth-child(1)  { top: 12%; left: 10%; animation-delay: 0s; }
+  .sparkle:nth-child(2)  { top: 8%;  right: 12%; animation-delay: 0.4s; }
+  .sparkle:nth-child(3)  { top: 75%; left: 8%; animation-delay: 0.8s; }
+  .sparkle:nth-child(4)  { top: 80%; right: 10%; animation-delay: 1.2s; }
+  .sparkle:nth-child(5)  { top: 45%; left: 5%; animation-delay: 0.6s; }
+
+  @keyframes sparklePop {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.8); opacity: 1; }
+  }
+
+  .card-emoji { font-size: clamp(2rem, 6vw, 3rem); line-height: 1; }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    color: var(--primary-purple);
+    text-align: center; line-height: 1.2;
+  }
+
+  .card-name {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    color: #C060C0;
+    text-align: center;
+  }
+
+  .card-msg {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+    color: var(--text-secondary);
+    text-align: center; font-style: italic;
+    max-width: 80%;
+  }
+
+  .card-flowers {
+    font-size: 1.4rem; letter-spacing: 6px;
+    margin-top: 4px;
+  }
+
+  /* Buttons */
+  .btn-row {
+    display: flex; gap: 24px; justify-content: center;
+    flex-wrap: wrap; margin: 28px auto 0;
+    animation: slideUp 0.8s ease-out 1.6s both;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+  }
+
+  .action-btn {
+    width: 180px; min-height: 110px;
+    background: linear-gradient(135deg, var(--light-lavender), #C080D0);
+    border: 2px solid rgba(255,255,255,0.7);
+    border-radius: 18px; cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px; padding: 14px;
+    box-shadow: 0 4px 20px rgba(155,89,182,0.3);
+    animation: btnPulse 2.5s ease-in-out infinite;
+    transition: transform 0.25s ease-out, box-shadow 0.25s;
+    text-decoration: none;
+  }
+
+  @keyframes btnPulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(155,89,182,0.3); }
+    50% { box-shadow: 0 4px 30px rgba(155,89,182,0.55); }
+  }
+
+  .action-btn:hover {
+    transform: scale(1.07);
+    box-shadow: 0 8px 32px rgba(155,89,182,0.5);
+    animation: none;
+  }
+
+  .action-btn:active { transform: scale(0.96); }
+
+  .btn-icon { font-size: 2.2rem; }
+  .btn-label {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600; font-size: 1rem;
+    color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .btn-sub {
+    font-size: 0.72rem; color: rgba(255,255,255,0.85);
+    font-style: italic;
+  }
+
+  /* Bottom tulip border */
+  .tulip-border {
+    display: flex; justify-content: center;
+    gap: 10px; padding: 14px 0 0;
+    font-size: 1.6rem; flex-wrap: wrap;
+    animation: fadeIn 1s ease 2s both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* ============ PAGE 2: POSTCARD ============ */
+  #page-postcard {
+    background: linear-gradient(135deg, #FFF8F0, #F0E0FF, #FFF0F8);
+    padding: 20px;
+    min-height: 100vh;
+  }
+
+  /* ============ PAGE 3: GIFTS ============ */
+  #page-gifts {
+    background: linear-gradient(135deg, #F8F0FF, #FFF0F8, #F0F8FF);
+    padding: 20px;
+    min-height: 100vh;
+  }
+
+  /* Back button */
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(155,89,182,0.12);
+    border: 1.5px solid rgba(155,89,182,0.35);
+    padding: 8px 16px; border-radius: 50px;
+    cursor: pointer; font-family: 'Quicksand'; font-weight: 600;
+    font-size: 0.9rem; color: var(--primary-purple);
+    transition: all 0.25s; margin-bottom: 20px;
+  }
+  .back-btn:hover { background: rgba(155,89,182,0.22); transform: translateX(-2px); }
+
+  /* Page heading */
+  .page-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    color: var(--primary-purple);
+    text-align: center; margin-bottom: 6px;
+  }
+  .page-sub {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem; color: var(--text-secondary);
+    text-align: center; margin-bottom: 28px;
+  }
+
+  /* ---- POSTCARD ---- */
+  .postcard-wrap {
+    max-width: 640px; margin: 0 auto;
+    animation: slideUp 0.7s ease both;
+  }
+
+  .postcard {
+    background: #FFFDF7;
+    border: 2px solid rgba(155,89,182,0.35);
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    position: relative;
+    box-shadow: 0 6px 30px rgba(155,89,182,0.18), inset 0 0 60px rgba(255,240,255,0.5);
+    min-height: 300px;
+  }
+
+  /* Ornamental corners */
+  .postcard::before, .postcard::after {
+    content: '❀';
+    position: absolute; font-size: 1.4rem;
+    color: rgba(155,89,182,0.4);
+  }
+  .postcard::before { top: 10px; left: 14px; }
+  .postcard::after  { bottom: 10px; right: 14px; }
+
+  .postcard-stamp {
+    position: absolute; top: 14px; right: 14px;
+    width: 52px; height: 64px;
+    border: 2.5px solid #C090D0;
+    border-radius: 4px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, #F8E8FF, #FFE8F8);
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,0.8);
+  }
+  .postcard-stamp::after {
+    content: '🇮🇳'; font-size: 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  .postcard-dear {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem; color: var(--text-primary);
+    margin-bottom: 10px; margin-top: 6px;
+  }
+
+  #postcard-text {
+    width: 100%;
+    min-height: 140px;
+    border: none; outline: none;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.15rem; color: var(--text-primary);
+    background: transparent; resize: none;
+    line-height: 1.7;
+  }
+
+  .postcard-sign {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem; color: var(--text-secondary);
+    margin-top: 10px;
+  }
+
+  #char-count {
+    text-align: right; font-size: 0.78rem;
+    color: var(--text-secondary); margin-top: 8px;
+  }
+
+  #char-count.over { color: #E74C3C; }
+
+  .send-btn {
+    display: block; margin: 20px auto 0;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #C060C0, #9B59B6);
+    color: #fff; border: none; border-radius: 50px;
+    font-family: 'Quicksand'; font-weight: 700;
+    font-size: 1.05rem; cursor: pointer;
+    box-shadow: 0 4px 18px rgba(155,89,182,0.4);
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .send-btn:hover { transform: scale(1.05); box-shadow: 0 6px 24px rgba(155,89,182,0.6); }
+  .send-btn:active { transform: scale(0.97); }
+
+  .sent-msg {
+    text-align: center; margin-top: 16px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.3rem; color: #9B59B6;
+    display: none;
+  }
+
+  /* ---- GIFTS ---- */
+  .gifts-grid {
+    display: flex; flex-wrap: wrap;
+    gap: 22px; justify-content: center;
+    max-width: 780px; margin: 0 auto;
+  }
+
+  .gift-card {
+    width: 210px; height: 220px;
+    perspective: 900px;
+    cursor: pointer;
+  }
+
+  .gift-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(.5,.2,.3,1);
+  }
+
+  .gift-card.flipped .gift-inner {
+    transform: rotateY(180deg);
+  }
+
+  .gift-face {
+    position: absolute; inset: 0;
+    border-radius: 18px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 18px;
+  }
+
+  .gift-front {
+    background: linear-gradient(135deg, #F3E5F5, #FFE4F4);
+    border: 2px solid rgba(221,160,221,0.6);
+    box-shadow: 0 4px 20px rgba(155,89,182,0.2);
+    gap: 10px;
+  }
+
+  .gift-front:hover { box-shadow: 0 8px 30px rgba(155,89,182,0.35); }
+
+  .gift-icon { font-size: 3rem; animation: giftWiggle 2s ease-in-out infinite; }
+
+  @keyframes giftWiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  .gift-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; color: var(--primary-purple);
+    text-align: center;
+  }
+
+  .gift-hint {
+    font-size: 0.72rem; color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  .gift-back {
+    background: linear-gradient(135deg, #9B59B6, #C060B0);
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 4px 20px rgba(155,89,182,0.3);
+    transform: rotateY(180deg);
+    gap: 8px;
+  }
+
+  .gift-back-emoji { font-size: 1.8rem; }
+  .gift-back-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem; color: #fff;
+    text-align: center; font-weight: 700;
+  }
+  .gift-back-msg {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.82rem; color: rgba(255,255,255,0.9);
+    text-align: center; line-height: 1.5;
+  }
+
+  /* ============ FLOWERS SVG ============ */
+  .flowers-row {
+    display: flex; justify-content: center;
+    gap: 8px; margin-top: 30px; flex-wrap: wrap;
+    font-size: 1.5rem;
+  }
+
+  /* ============ CONFETTI ============ */
+  .confetti-piece {
+    position: fixed; width: 10px; height: 10px;
+    top: -10px; border-radius: 2px;
+    animation: confettiFall linear forwards;
+    pointer-events: none; z-index: 9999;
+  }
+
+  @keyframes confettiFall {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg) translateX(var(--drift, 0px)); opacity: 0; }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .btn-row { gap: 14px; }
+    .action-btn { width: 148px; min-height: 96px; }
+    .gift-card { width: 165px; height: 180px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* ============ PAGE 4: CAKE ============ */
+  #page-cake {
+    background: linear-gradient(135deg, #FFF8F0, #F0E0FF, #FFF0F8);
+    padding: 20px;
+    min-height: 100vh;
+  }
+
+  .cake-video-wrap {
+    max-width: 640px;
+    margin: 0 auto 24px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 16px;
+  }
+
+  .candle-ring {
+    display: flex; gap: 14px; justify-content: center;
+    flex-wrap: wrap; font-size: 1.5rem;
+    animation: fadeIn 1s ease both;
+  }
+
+  .video-container {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(155,89,182,0.25), 0 2px 8px rgba(0,0,0,0.08);
+    border: 2px solid rgba(221,160,221,0.45);
+    background: #000;
+    animation: slideUp 0.8s ease 0.3s both;
+  }
+
+  .cake-caption {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    text-align: center;
+    animation: fadeIn 1s ease 0.6s both;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="confetti-container"></div>
+
+<!-- Music toggle -->
+<button id="music-toggle" title="Toggle music" onclick="toggleMusic()">🎵</button>
+
+<!-- Hidden audio (looping ambient music via a royalty-free URL placeholder) -->
+<audio id="bg-music" loop>
+  <!-- Replace src with your own music file or a royalty-free URL -->
+  <source src="https://www.bensound.com/bensound-music/bensound-buddy.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ===================== PAGE 1: HOME ===================== -->
+<div id="page-home" class="page active">
+
+  <!-- Top floral field -->
+  <div class="floral-field" style="height:110px; margin-bottom:0;">
+    <!-- Tulip 1 -->
+    <div class="flower" style="left:3%;top:10px;width:52px;height:72px;--r:-8deg;animation-delay:0s;">
+      <svg viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg">
+        <line x1="26" y1="72" x2="26" y2="38" stroke="#5D9A6B" stroke-width="3.5"/>
+        <path d="M26 36 C18 28, 10 18, 14 8 C18 0, 26 4, 26 12" fill="#FFB6C1"/>
+        <path d="M26 36 C34 28, 42 18, 38 8 C34 0, 26 4, 26 12" fill="#FF90A8"/>
+        <path d="M26 36 C16 24, 8 32, 12 22 C16 14, 24 20, 26 28" fill="#FFCDD6"/>
+        <path d="M26 36 C36 24, 44 32, 40 22 C36 14, 28 20, 26 28" fill="#FF9DB5"/>
+      </svg>
+    </div>
+    <!-- Lavender 1 -->
+    <div class="flower" style="left:14%;top:5px;width:30px;height:68px;--r:5deg;animation-delay:0.5s;">
+      <svg viewBox="0 0 30 68" xmlns="http://www.w3.org/2000/svg">
+        <line x1="15" y1="68" x2="15" y2="28" stroke="#5D9A6B" stroke-width="2.5"/>
+        <ellipse cx="15" cy="22" rx="5" ry="7" fill="#C084D0" opacity="0.9"/>
+        <ellipse cx="9"  cy="30" rx="4" ry="6" fill="#B070C0" opacity="0.85"/>
+        <ellipse cx="21" cy="30" rx="4" ry="6" fill="#C890D8" opacity="0.85"/>
+        <ellipse cx="12" cy="38" rx="3.5" ry="5" fill="#D0A0E0" opacity="0.8"/>
+        <ellipse cx="18" cy="38" rx="3.5" ry="5" fill="#C080D0" opacity="0.8"/>
+      </svg>
+    </div>
+    <!-- Tulip purple -->
+    <div class="flower" style="left:28%;top:15px;width:44px;height:64px;--r:6deg;animation-delay:0.3s;">
+      <svg viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg">
+        <line x1="26" y1="72" x2="26" y2="38" stroke="#5D9A6B" stroke-width="3.5"/>
+        <path d="M26 36 C18 28, 10 18, 14 8 C18 0, 26 4, 26 12" fill="#DDA0DD"/>
+        <path d="M26 36 C34 28, 42 18, 38 8 C34 0, 26 4, 26 12" fill="#CC88CC"/>
+        <path d="M26 36 C16 24, 8 32, 12 22 C16 14, 24 20, 26 28" fill="#EEC0EE"/>
+        <path d="M26 36 C36 24, 44 32, 40 22 C36 14, 28 20, 26 28" fill="#D499D4"/>
+      </svg>
+    </div>
+    <!-- Tulip right -->
+    <div class="flower" style="right:5%;top:8px;width:50px;height:70px;--r:10deg;animation-delay:0.7s;">
+      <svg viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg">
+        <line x1="26" y1="72" x2="26" y2="38" stroke="#5D9A6B" stroke-width="3.5"/>
+        <path d="M26 36 C18 28, 10 18, 14 8 C18 0, 26 4, 26 12" fill="#FFD0E8"/>
+        <path d="M26 36 C34 28, 42 18, 38 8 C34 0, 26 4, 26 12" fill="#FFB8D8"/>
+        <path d="M26 36 C16 24, 8 32, 12 22 C16 14, 24 20, 26 28" fill="#FFE0F0"/>
+        <path d="M26 36 C36 24, 44 32, 40 22 C36 14, 28 20, 26 28" fill="#FFC8E0"/>
+      </svg>
+    </div>
+    <!-- Lavender right -->
+    <div class="flower" style="right:20%;top:4px;width:28px;height:65px;--r:-6deg;animation-delay:1s;">
+      <svg viewBox="0 0 30 68" xmlns="http://www.w3.org/2000/svg">
+        <line x1="15" y1="68" x2="15" y2="28" stroke="#5D9A6B" stroke-width="2.5"/>
+        <ellipse cx="15" cy="22" rx="5" ry="7" fill="#9B68C0" opacity="0.9"/>
+        <ellipse cx="9"  cy="30" rx="4" ry="6" fill="#8A5AB0" opacity="0.85"/>
+        <ellipse cx="21" cy="30" rx="4" ry="6" fill="#A878D0" opacity="0.85"/>
+        <ellipse cx="12" cy="38" rx="3.5" ry="5" fill="#B888D8" opacity="0.8"/>
+        <ellipse cx="18" cy="38" rx="3.5" ry="5" fill="#9860C0" opacity="0.8"/>
+      </svg>
+    </div>
+    <!-- Small tulip mid -->
+    <div class="flower" style="left:55%;top:20px;width:35px;height:55px;--r:-4deg;animation-delay:0.9s;">
+      <svg viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg">
+        <line x1="26" y1="72" x2="26" y2="38" stroke="#6aab78" stroke-width="3"/>
+        <path d="M26 36 C18 28, 10 18, 14 8 C18 0, 26 4, 26 12" fill="#FF8C9E"/>
+        <path d="M26 36 C34 28, 42 18, 38 8 C34 0, 26 4, 26 12" fill="#FF7088"/>
+        <path d="M26 36 C16 24, 8 32, 12 22 C16 14, 24 20, 26 28" fill="#FFA0B2"/>
+        <path d="M26 36 C36 24, 44 32, 40 22 C36 14, 28 20, 26 28" fill="#FF8898"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Birthday Card -->
+  <div class="card-wrap">
+    <div class="birthday-card">
+      <div class="card-front">
+        <div class="sparkle"></div><div class="sparkle"></div>
+        <div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div>
+        <div class="card-emoji">🌷🎂🌷</div>
+        <div class="card-title">Happy Birthday!</div>
+        <div class="card-name" id="friend-name-display">Your Friend</div>
+        <div class="card-msg">"Wishing you the most wonderful, magical day filled with love and joy"</div>
+        <div class="card-flowers">🌸🌷🌼🌷🌸</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-row">
+    <button class="action-btn" onclick="goTo('page-postcard')">
+      <span class="btn-icon">✉️</span>
+      <span class="btn-label">Write a Postcard</span>
+      <span class="btn-sub">Send your wishes</span>
+    </button>
+    <button class="action-btn" onclick="goTo('page-gifts')">
+      <span class="btn-icon">🎁</span>
+      <span class="btn-label">Open Gifts</span>
+      <span class="btn-sub">See what's inside</span>
+    </button>
+    <button class="action-btn" onclick="goTo('page-cake')">
+      <span class="btn-icon">🎂</span>
+      <span class="btn-label">Cut the Cake</span>
+      <span class="btn-sub">A surprise awaits</span>
+    </button>
+  </div>
+
+  <!-- Bottom tulip border -->
+  <div class="tulip-border">
+    🌷🌸🌼🌷🌸🌼🌷🌸🌼🌷🌸🌼🌷
+  </div>
+</div>
+
+<!-- ===================== PAGE 2: POSTCARD ===================== -->
+<div id="page-postcard" class="page">
+  <button class="back-btn" onclick="goTo('page-home')">← Back</button>
+
+  <div class="page-heading">Write a Postcard 💌</div>
+  <div class="page-sub">Pour your heart out, one petal at a time</div>
+
+  <div class="postcard-wrap">
+    <div class="postcard">
+      <div class="postcard-stamp">🌷</div>
+      <div class="postcard-dear">Dear <span id="pc-name">Your Friend</span>,</div>
+      <textarea id="postcard-text" maxlength="400"
+        placeholder="Write your heartfelt message here... 🌸"
+        oninput="updateCharCount()"></textarea>
+      <div class="postcard-sign">With love, 💜</div>
+    </div>
+    <div id="char-count">0 / 400</div>
+
+    <button class="send-btn" onclick="sendPostcard()">✨ Send Wishes ✨</button>
+    <div class="sent-msg" id="sent-msg">💌 Your wishes have been sent with love! 🌷</div>
+  </div>
+
+  <div class="flowers-row">🌷 🌸 🌼 🌷 🌸 🌼 🌷 🌸 🌼 🌷</div>
+</div>
+
+<!-- ===================== PAGE 3: GIFTS ===================== -->
+<div id="page-gifts" class="page">
+  <button class="back-btn" onclick="goTo('page-home')">← Back</button>
+
+  <div class="page-heading">🎉 Your Gifts Await! 🎉</div>
+  <div class="page-sub">Click each gift to unwrap a surprise</div>
+
+  <div class="gifts-grid">
+
+    <!-- Gift 1 -->
+    <div class="gift-card" onclick="flipGift(this)">
+      <div class="gift-inner">
+        <div class="gift-face gift-front">
+          <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift #1</div>
+          <div class="gift-hint">tap to open</div>
+        </div>
+        <div class="gift-face gift-back">
+          <div class="gift-back-emoji">🌹</div>
+          <div class="gift-back-title">A Thousand Roses</div>
+          <div class="gift-back-msg">If I counted every reason you're amazing, I'd run out of roses before I ran out of reasons. 🌸</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift 2 -->
+    <div class="gift-card" onclick="flipGift(this)">
+      <div class="gift-inner">
+        <div class="gift-face gift-front">
+          <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift #2</div>
+          <div class="gift-hint">tap to open</div>
+        </div>
+        <div class="gift-face gift-back">
+          <div class="gift-back-emoji">✨</div>
+          <div class="gift-back-title">A Wish for You</div>
+          <div class="gift-back-msg">May today bring you everything you've ever wished for — and a little extra magic on top. 💫</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift 3 -->
+    <div class="gift-card" onclick="flipGift(this)">
+      <div class="gift-inner">
+        <div class="gift-face gift-front">
+          <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift #3</div>
+          <div class="gift-hint">tap to open</div>
+        </div>
+        <div class="gift-face gift-back">
+          <div class="gift-back-emoji">💜</div>
+          <div class="gift-back-title">My Favourite Thing</div>
+          <div class="gift-back-msg">My favourite thing about your birthday? Getting to celebrate one of the best people I know. 🎂</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift 4 -->
+    <div class="gift-card" onclick="flipGift(this)">
+      <div class="gift-inner">
+        <div class="gift-face gift-front">
+          <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift #4</div>
+          <div class="gift-hint">tap to open</div>
+        </div>
+        <div class="gift-face gift-back">
+          <div class="gift-back-emoji">🌙</div>
+          <div class="gift-back-title">A Thousand Quiet Nights</div>
+          <div class="gift-back-msg">For every time the world felt too loud — you deserve a thousand peaceful evenings filled with softness. 🕯️</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift 5 -->
+    <div class="gift-card" onclick="flipGift(this)">
+      <div class="gift-inner">
+        <div class="gift-face gift-front">
+          <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift #5</div>
+          <div class="gift-hint">tap to open</div>
+        </div>
+        <div class="gift-face gift-back">
+          <div class="gift-back-emoji">🦋</div>
+          <div class="gift-back-title">New Beginnings</div>
+          <div class="gift-back-msg">This year is yours — new doors, new light, new versions of yourself you haven't even met yet. 🌟</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift 6 -->
+    <div class="gift-card" onclick="flipGift(this)">
+      <div class="gift-inner">
+        <div class="gift-face gift-front">
+          <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift #6</div>
+          <div class="gift-hint">tap to open</div>
+        </div>
+        <div class="gift-face gift-back">
+          <div class="gift-back-emoji">💫</div>
+          <div class="gift-back-title">The Real Gift</div>
+          <div class="gift-back-msg">It's you. You make everything brighter just by being in it. The world is luckier with you in it. 💜</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flowers-row">🌷 🌸 🌼 🌷 🌸 🌼 🌷 🌸 🌼</div>
+</div>
+
+<!-- ===================== PAGE 4: CAKE / VIDEO ===================== -->
+<div id="page-cake" class="page">
+  <button class="back-btn" onclick="goTo('page-home'); stopVideo()">&#8592; Back</button>
+
+  <div class="page-heading">&#127874; Happy Birthday! &#127874;</div>
+  <div class="page-sub">A little something special, just for you &#127831;</div>
+
+  <div class="cake-video-wrap">
+    <div class="candle-ring">
+      <span>&#128305;</span><span>&#10024;</span><span>&#128305;</span>
+      <span>&#10024;</span><span>&#128305;</span><span>&#10024;</span>
+      <span>&#128305;</span><span>&#10024;</span>
+    </div>
+
+    <div class="video-container">
+      <video id="cake-video" controls playsinline
+        style="width:100%;border-radius:16px;display:block;">
+        <source src="12_Am_Birthday_Manny.mp4" type="video/mp4">
+        Your browser does not support video.
+      </video>
+    </div>
+
+    <div class="cake-caption">&#127881; Make a wish before you press play! &#127881;</div>
+  </div>
+
+  <div class="flowers-row">&#127831; &#127800; &#127874; &#127800; &#127831; &#127800; &#127874; &#127800; &#127831;</div>
+</div>
+
+
+<script>
+
+// ---- Stop video on back ----
+function stopVideo() {
+  const v = document.getElementById('cake-video');
+  if (v) { v.pause(); v.currentTime = 0; }
+}
+
+// ---- Navigation ----
+function goTo(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ---- Music ----
+let musicOn = false;
+const audio = document.getElementById('bg-music');
+const btn = document.getElementById('music-toggle');
+
+function toggleMusic() {
+  if (musicOn) {
+    audio.pause();
+    btn.textContent = '🎵';
+    musicOn = false;
+  } else {
+    audio.play().catch(() => {});
+    btn.textContent = '🔇';
+    musicOn = true;
+  }
+}
+
+// ---- Gift flip ----
+function flipGift(card) {
+  card.classList.toggle('flipped');
+}
+
+// ---- Postcard char count ----
+function updateCharCount() {
+  const ta = document.getElementById('postcard-text');
+  const cc = document.getElementById('char-count');
+  const len = ta.value.length;
+  cc.textContent = len + ' / 400';
+  cc.classList.toggle('over', len >= 390);
+  // autosave
+  localStorage.setItem('birthdayPostcard', ta.value);
+}
+
+// Restore saved text
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('birthdayPostcard');
+  if (saved) {
+    document.getElementById('postcard-text').value = saved;
+    updateCharCount();
+  }
+});
+
+// ---- Send postcard with confetti ----
+function sendPostcard() {
+  launchConfetti(120);
+  const msg = document.getElementById('sent-msg');
+  msg.style.display = 'block';
+  const sendBtn = document.querySelector('.send-btn');
+  sendBtn.textContent = '💌 Sent!';
+  sendBtn.disabled = true;
+  sendBtn.style.opacity = '0.7';
+}
+
+// ---- Confetti ----
+function launchConfetti(count) {
+  const colors = ['#9B59B6','#FFB6C1','#FFD700','#DDA0DD','#FF6B9D','#C060C0','#7FDBFF','#FF9800'];
+  const container = document.getElementById('confetti-container');
+
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const left   = Math.random() * 100;
+    const delay  = Math.random() * 1.2;
+    const dur    = 2.2 + Math.random() * 1.5;
+    const drift  = (Math.random() - 0.5) * 200;
+    const size   = 7 + Math.random() * 8;
+    const shapes = ['2px','50%','0'];
+    const rad    = shapes[Math.floor(Math.random() * shapes.length)];
+
+    piece.style.cssText = `
+      left:${left}%; background:${color};
+      width:${size}px; height:${size * 0.6}px;
+      border-radius:${rad};
+      animation-duration:${dur}s;
+      animation-delay:${delay}s;
+      --drift:${drift}px;
+    `;
+    container.appendChild(piece);
+    setTimeout(() => piece.remove(), (delay + dur + 0.5) * 1000);
+  }
+}
+</script>
+</body>
+</html>
