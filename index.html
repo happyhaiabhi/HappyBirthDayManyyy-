@@ -239,14 +239,7 @@
     background: linear-gradient(135deg, #FFF8F0, #F0E0FF, #FFF0F8);
     padding: 20px;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
-  #page-postcard .postcard-wrap { width: min(640px, 92vw); }
-  #page-postcard .back-btn { align-self: flex-start; }
-  #page-postcard .page-heading,
-  #page-postcard .page-sub { text-align: center; width: 100%; }
 
   /* ============ PAGE 3: GIFTS ============ */
   #page-gifts {
@@ -257,7 +250,6 @@
 
   /* Back button */
   .back-btn {
-    align-self: flex-start;
     display: inline-flex; align-items: center; gap: 6px;
     background: rgba(155,89,182,0.12);
     border: 1.5px solid rgba(155,89,182,0.35);
@@ -283,7 +275,7 @@
 
   /* ---- POSTCARD ---- */
   .postcard-wrap {
-    width: min(640px, 92vw); margin: 0 auto;
+    max-width: 640px; margin: 0 auto;
     animation: slideUp 0.7s ease both;
   }
 
@@ -472,101 +464,11 @@
     100% { transform: translateY(100vh) rotate(720deg) translateX(var(--drift, 0px)); opacity: 0; }
   }
 
-  /* ============ RESPONSIVE ============ */
-
-  /* --- Desktop: postcard centered with padding --- */
-  @media (min-width: 769px) {
-    #page-postcard {
-      display: flex; flex-direction: column;
-      align-items: center;
-      padding: 40px 40px 60px;
-    }
-    .postcard-wrap {
-      width: 100%;
-      max-width: 600px;
-    }
-    .back-btn { align-self: flex-start; }
-    .page-heading, .page-sub { width: 100%; text-align: center; }
-
-    #page-gifts {
-      display: flex; flex-direction: column;
-      align-items: center;
-      padding: 40px 40px 60px;
-    }
-    #page-gifts .back-btn { align-self: flex-start; }
-
-    #page-cake {
-      display: flex; flex-direction: column;
-      align-items: center;
-      padding: 40px 40px 60px;
-    }
-    #page-cake .back-btn { align-self: flex-start; }
-
-    /* Flowers: constrain to viewport, no overflow */
-    .floral-field {
-      overflow: hidden;
-      max-width: 100vw;
-    }
-
-    /* Buttons: all 3 in one row on desktop */
-    .btn-row {
-      flex-wrap: nowrap;
-      gap: 20px;
-    }
-    .action-btn {
-      width: 170px;
-    }
-  }
-
-  /* --- Tablet --- */
-  @media (min-width: 481px) and (max-width: 768px) {
-    .btn-row { flex-wrap: wrap; gap: 16px; }
-    .action-btn { width: 160px; min-height: 100px; }
-    .gift-card { width: 185px; height: 200px; }
-    .floral-field { overflow: hidden; }
-  }
-
-  /* --- Mobile --- */
-  @media (max-width: 480px) {
-    /* Flowers: fixed positions become % of screen, clipped */
-    .floral-field {
-      overflow: hidden;
-      height: 90px !important;
-    }
-    /* Flowers near edges get pulled inward */
-    .flower[style*="left:3%"]  { left: 2% !important; }
-    .flower[style*="right:5%"] { right: 2% !important; }
-    .flower[style*="right:20%"]{ right: 16% !important; }
-
-    /* Shrink flowers on mobile */
-    .flower { transform-origin: bottom center; }
-
-    /* Buttons: 2x1 + 1 centered */
-    .btn-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      width: min(360px, 92vw);
-    }
-    .btn-row .action-btn:last-child {
-      grid-column: 1 / -1;
-      width: 100%;
-    }
-    .action-btn {
-      width: 100%; min-height: 88px;
-    }
-
-    /* Postcard full width */
-    .postcard-wrap { padding: 0 4px; }
-    .postcard { padding: 20px 16px 18px; }
-
-    /* Gift cards 2-column grid */
-    .gifts-grid { gap: 14px; }
-    .gift-card { width: 155px; height: 170px; }
-
-    /* Tulip border wrap tightly */
-    .tulip-border { font-size: 1.2rem; gap: 6px; padding: 10px 8px 0; }
-    .flowers-row  { font-size: 1.2rem; gap: 6px; margin-top: 20px; padding: 0 8px; }
+  /* Responsive */
+  @media (max-width: 600px) {
+    .btn-row { gap: 14px; }
+    .action-btn { width: 148px; min-height: 96px; }
+    .gift-card { width: 165px; height: 180px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -611,30 +513,6 @@
     animation: fadeIn 1s ease 0.6s both;
   }
 
-
-  /* ---- TYPEWRITER ---- */
-  .typewriter-body {
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    line-height: 1.8;
-    min-height: 160px;
-    padding: 4px 0 8px;
-    word-break: break-word;
-  }
-  .typewriter-body .tw-cursor {
-    display: inline-block;
-    width: 2px; height: 1.1em;
-    background: #9B59B6;
-    margin-left: 2px;
-    vertical-align: text-bottom;
-    animation: blinkCursor 0.7s step-end infinite;
-  }
-  @keyframes blinkCursor {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
 </style>
 </head>
 <body>
@@ -644,9 +522,10 @@
 <!-- Music toggle -->
 <button id="music-toggle" title="Toggle music" onclick="toggleMusic()">🎵</button>
 
-<!-- Background music -->
+<!-- Hidden audio (looping ambient music via a royalty-free URL placeholder) -->
 <audio id="bg-music" loop>
-  <source src="Rainy_Days.mp3" type="audio/mpeg">
+  <!-- Replace src with your own music file or a royalty-free URL -->
+  <source src="https://www.bensound.com/bensound-music/bensound-buddy.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ===================== PAGE 1: HOME ===================== -->
@@ -769,11 +648,14 @@
     <div class="postcard">
       <div class="postcard-stamp">🌷</div>
       <div class="postcard-dear">Dear <span id="pc-name">Your Friend</span>,</div>
-      <div id="typewriter-text" class="typewriter-body"></div>
-      <div class="postcard-sign">With all my love, 💜</div>
+      <textarea id="postcard-text" maxlength="400"
+        placeholder="Write your heartfelt message here... 🌸"
+        oninput="updateCharCount()"></textarea>
+      <div class="postcard-sign">With love, 💜</div>
     </div>
+    <div id="char-count">0 / 400</div>
 
-    <button class="send-btn" id="send-postcard-btn" onclick="sendPostcard()" style="display:none">Send Wishes</button>
+    <button class="send-btn" onclick="sendPostcard()">✨ Send Wishes ✨</button>
     <div class="sent-msg" id="sent-msg">💌 Your wishes have been sent with love! 🌷</div>
   </div>
 
@@ -794,6 +676,7 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -809,6 +692,7 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -824,6 +708,7 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -839,6 +724,7 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -854,6 +740,7 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -869,6 +756,7 @@
       <div class="gift-inner">
         <div class="gift-face gift-front">
           <div class="gift-icon">🎁</div>
+          <div class="gift-label">Gift</div>
           <div class="gift-hint">tap to open</div>
         </div>
         <div class="gift-face gift-back">
@@ -889,7 +777,7 @@
   <button class="back-btn" onclick="goTo('page-home'); stopVideo()">&#8592; Back</button>
 
   <div class="page-heading">&#127874; Happy Birthday! &#127874;</div>
-  <div class="page-sub">A little something special, just for you &#127831;</div>
+  <div class="page-sub">A little something special, just for you &#129781; &#129782;</div>
 
   <div class="cake-video-wrap">
     <div class="candle-ring">
@@ -909,7 +797,7 @@
     <div class="cake-caption">&#127881; Make a wish before you press play! &#127881;</div>
   </div>
 
-  <div class="flowers-row">&#127831; &#127800; &#127874; &#127800; &#127831; &#127800; &#127874; &#127800; &#127831;</div>
+  <div class="flowers-row">&#129781; &#129782; &#127800; &#127874; &#127800; &#129781; &#129782; &#127800; &#127874; &#127800; &#129781; &#129782;</div>
 </div>
 
 
@@ -926,45 +814,6 @@ function goTo(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
   window.scrollTo(0, 0);
-  if (pageId === 'page-postcard') {
-    twDone = false;
-    twIndex = 0;
-    const btn = document.getElementById('send-postcard-btn');
-    if (btn) btn.style.display = 'none';
-    setTimeout(runTypewriter, 500);
-  }
-}
-
-// ---- Typewriter ----
-const twMessage = "Today is your day — and I hope it feels as magical as you deserve. Every moment you've made people smile, every time you showed up with kindness and warmth... it all comes back to you today. You are deeply loved, truly special, and this world is so much better with you in it. Happy Birthday, beautiful soul. 🌷";
-
-let twIndex = 0;
-let twDone = false;
-
-function runTypewriter() {
-  const el = document.getElementById('typewriter-text');
-  if (!el) return;
-  el.innerHTML = '';
-  twDone = false;
-  const cursor = document.createElement('span');
-  cursor.className = 'tw-cursor';
-  el.appendChild(cursor);
-  twIndex = 0;
-
-  function typeNext() {
-    if (twIndex < twMessage.length) {
-      cursor.insertAdjacentText('beforebegin', twMessage[twIndex]);
-      twIndex++;
-      const delay = ['.', ',', '—'].includes(twMessage[twIndex - 1]) ? 100 : 36;
-      setTimeout(typeNext, delay);
-    } else {
-      cursor.remove();
-      twDone = true;
-      const btn = document.getElementById('send-postcard-btn');
-      if (btn) { btn.style.display = 'block'; btn.style.animation = 'slideUp 0.5s ease both'; }
-    }
-  }
-  typeNext();
 }
 
 // ---- Music ----
@@ -989,8 +838,25 @@ function flipGift(card) {
   card.classList.toggle('flipped');
 }
 
+// ---- Postcard char count ----
+function updateCharCount() {
+  const ta = document.getElementById('postcard-text');
+  const cc = document.getElementById('char-count');
+  const len = ta.value.length;
+  cc.textContent = len + ' / 400';
+  cc.classList.toggle('over', len >= 390);
+  // autosave
+  localStorage.setItem('birthdayPostcard', ta.value);
+}
+
 // Restore saved text
-window.addEventListener('DOMContentLoaded', () => {});
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('birthdayPostcard');
+  if (saved) {
+    document.getElementById('postcard-text').value = saved;
+    updateCharCount();
+  }
+});
 
 // ---- Send postcard with confetti ----
 function sendPostcard() {
