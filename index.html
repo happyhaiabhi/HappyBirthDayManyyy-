@@ -804,7 +804,8 @@
         <div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div>
         <div class="card-emoji">🌷🎂🌷</div>
         <div class="card-title">Happy Birthday!</div>
-        <div class="card-name">Manyyy!</div>
+        <div class="card-name">Manyyy!
+        </div>
         <div class="card-msg">"Wishing you the most wonderful, magical day filled with love and joy"</div>
         <div class="card-flowers">🌸🌷🌼🌷🌸</div>
       </div>
@@ -1055,7 +1056,9 @@ const giftData = {
     img: 'gift_flowers.jpg',
     emoji: '💐',
     title: 'Flower Bouquet 💐',
-    msg: 'Tumhare liye phool — kyunki tum khud ek garden ho, beautiful aur full of life. 🌸 Yeh coupon nahi, dil se gift hai! 💜'
+    msg: 'Tumhare liye phool — kyunki tum khud ek garden ho, beautiful aur full of life. 🌸 Yeh coupon nahi, dil se gift hai! 💜',
+    video: 'gift_flowers_video.mp4',
+    videoType: 'local'
   },
   bts: {
     img: 'gift_bts.jpg',
@@ -1190,7 +1193,7 @@ function closePreviewOutside(e) {
 }
 
 // Video gifts that need music pause warning
-const VIDEO_GIFTS = ['bts', 'video'];
+const VIDEO_GIFTS = ['bts', 'video', 'flowers'];
 
 function openFromPreview() {
   const key = _previewKey;
