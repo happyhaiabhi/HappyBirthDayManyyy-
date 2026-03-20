@@ -276,14 +276,14 @@
     gap: 10px;
     transition: transform 0.25s cubic-bezier(.2,.8,.3,1.2), box-shadow 0.25s;
   }
-  .gift-card:hover .gift-front { 
+  .gift-card:hover .gift-front {
     transform: translateY(-6px) scale(1.03);
     box-shadow: 0 14px 40px rgba(155,89,182,0.45), 0 0 20px rgba(221,160,221,0.4);
   }
   .gift-card:active .gift-front { transform: scale(0.96); }
 
-  .gift-icon { 
-    font-size: 3rem; 
+  .gift-icon {
+    font-size: 3rem;
     animation: giftWiggle 2.4s ease-in-out infinite;
     animation-delay: calc(var(--wi, 0) * 0.18s);
     filter: drop-shadow(0 4px 8px rgba(155,89,182,0.25));
@@ -540,7 +540,51 @@
     align-items: center; gap: 3px;
   }
 
-  /* ── GIFT PREVIEW POPUP (layer 1 for emoji cards) ── */
+  /* ── SVG BOUQUET HEADER (flowers gift — replaces video) ── */
+  .modal-bouquet-header {
+    width: 100%; height: 210px;
+    border-radius: 22px 22px 0 0;
+    background: linear-gradient(160deg, #FFF0F8 0%, #F5E6FF 50%, #FFF8F0 100%);
+    display: flex; align-items: flex-end; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+  .modal-bouquet-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 85%, rgba(255,182,193,0.35) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .bouquet-stem-wrap {
+    display: flex; gap: 5px; align-items: flex-end; justify-content: center;
+    padding: 0 8px;
+    animation: bouquetRise 0.75s cubic-bezier(.2,.8,.3,1.2) both;
+  }
+  @keyframes bouquetRise {
+    from { transform: translateY(50px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .bouquet-stem-wrap svg {
+    animation: floatSway 3.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .bouquet-stem-wrap svg:nth-child(1) { animation-delay: 0.00s; }
+  .bouquet-stem-wrap svg:nth-child(2) { animation-delay: 0.25s; }
+  .bouquet-stem-wrap svg:nth-child(3) { animation-delay: 0.10s; }
+  .bouquet-stem-wrap svg:nth-child(4) { animation-delay: 0.40s; }
+  .bouquet-stem-wrap svg:nth-child(5) { animation-delay: 0.60s; }
+  .bouquet-stem-wrap svg:nth-child(6) { animation-delay: 0.30s; }
+  .bouquet-stem-wrap svg:nth-child(7) { animation-delay: 0.15s; }
+  .bouquet-sparkle {
+    position: absolute; font-size: 1rem;
+    animation: sparkleFloat 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes sparkleFloat {
+    0%,100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.65; }
+    50%      { transform: translateY(-9px) rotate(22deg) scale(1.3); opacity: 1; }
+  }
+
+  /* ── GIFT PREVIEW POPUP ── */
   .gift-preview-overlay {
     position: fixed; inset: 0;
     background: rgba(44,20,60,0.6);
@@ -571,7 +615,6 @@
     100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
 
-  /* triple shimmer sweep */
   .gift-preview-box::before {
     content: '';
     position: absolute; top: 0; left: -80%; width: 60%; height: 100%;
@@ -584,7 +627,6 @@
     100% { left: 130%; }
   }
 
-  /* dashed inner border */
   .gift-preview-box::after {
     content: '';
     position: absolute; inset: 8px;
@@ -674,11 +716,6 @@
     animation: sparkleFloat 3s ease-in-out infinite;
     pointer-events: none; z-index: 1;
   }
-  @keyframes sparkleFloat {
-    0%,100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.7; }
-    33%      { transform: translateY(-10px) rotate(20deg) scale(1.2); opacity: 1; }
-    66%      { transform: translateY(-5px) rotate(-10deg) scale(0.9); opacity: 0.8; }
-  }
 
   /* ── MUSIC POPUP ────────────────────────────── */
   .music-popup-overlay {
@@ -703,23 +740,19 @@
   }
 
   .music-popup-icon { font-size: 3rem; margin-bottom: 12px; animation: giftWiggle 2s ease-in-out infinite; }
-
   .music-popup-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.15rem; color: var(--primary-purple);
     margin-bottom: 8px;
   }
-
   .music-popup-msg {
     font-family: 'Quicksand', sans-serif;
     font-size: 0.88rem; color: var(--text-secondary);
     line-height: 1.5; margin-bottom: 22px;
   }
-
   .music-popup-btns {
     display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
   }
-
   .music-popup-btn {
     flex: 1; min-width: 110px;
     padding: 11px 16px; border: none; border-radius: 50px;
@@ -847,29 +880,17 @@
   <div class="page-sub">Click each gift to unwrap a surprise</div>
   <div class="gifts-grid">
 
-    <!-- ── 12 gifts mixed order ── -->
     <div class="gift-card" style="--wi:0"  onclick="previewGift('roses')"     ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:1"  onclick="previewGift('panipuri')"  ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:2"  onclick="previewGift('wish')"      ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:3"  onclick="previewGift('bts')"       ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:4"  onclick="previewGift('chocolate')" ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:5"  onclick="previewGift('quietnight')"><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:6"  onclick="previewGift('flowers')"   ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:7"  onclick="previewGift('fav')"       ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:8"  onclick="previewGift('rasmalai')"  ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:9"  onclick="previewGift('newbegin')"  ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:10" onclick="previewGift('video')"     ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
-
     <div class="gift-card" style="--wi:11" onclick="previewGift('realgift')"  ><div class="gift-inner"><div class="gift-face gift-front"><div class="gift-icon">🎁</div><div class="gift-label">Gift</div><div class="gift-hint">tap to open</div></div><div class="gift-face gift-back"><div class="gift-back-emoji">🎁</div><div class="gift-back-title">Opening...</div><div class="gift-back-msg">💜</div></div></div></div>
 
   </div>
@@ -936,7 +957,6 @@ function toggleMusic() {
   }
 }
 
-// Start on first tap anywhere (except music button itself)
 function onFirstInteraction(e) {
   if (e.target.id === 'music-toggle') return;
   document.removeEventListener('click',      onFirstInteraction);
@@ -1064,14 +1084,16 @@ const giftData = {
       'Gifter ka koi zimmedari nahi agar tum sara chocolate akele kha lo.',
     ]
   },
+
+  // ── CHANGE 1: flowers → animated SVG bouquet (no video, music keeps playing) ──
   flowers: {
-   img: 'https://raw.githubusercontent.com/happyhaiabhi/HappyBirthDayManyyy-/main/gift_flowers.jpg',
-    emoji: '💐',
-    title: 'Flower Bouquet 💐',
-    msg: 'Tumhare liye phool — kyunki tum khud ek garden ho, beautiful aur full of life. 🌸 💜',
-    video: 'https://raw.githubusercontent.com/happyhaiabhi/HappyBirthDayManyyy-/main/gift_flowers_video.mp4',
-    videoType: 'local'
-  },
+  img: 'https://raw.githubusercontent.com/happyhaiabhi/HappyBirthDayManyyy-/main/gift_flowers.avif',
+  emoji: '💐',
+  title: 'Flower Bouquet 💐',
+  msg: 'Tumhare liye phool — kyunki tum khud ek garden ho, beautiful aur full of life. 🌸 💜'
+},
+
+  // ── CHANGE 2: bts video → music pauses onplay, resumes onpause/onended ──
   bts: {
     img: 'gift_bts.jpg',
     emoji: '💜',
@@ -1080,6 +1102,8 @@ const giftData = {
     video: 'https://raw.githubusercontent.com/happyhaiabhi/HappyBirthDayManyyy-/main/gift_bts_video.mp4',
     videoType: 'local'
   },
+
+  // ── CHANGE 3: special video → same music sync ──
   video: {
     img: 'gift_video.jpg',
     emoji: '🎬',
@@ -1098,24 +1122,100 @@ function openGiftModal(key) {
   const msg     = document.getElementById('modal-msg');
   const wrap    = document.getElementById('modal-coupon-wrap');
 
-  // ── Music: keep playing for all gifts EXCEPT video gifts ──
-  // For bts/video gifts, music is paused only when video actually plays
-  // (handled via onplay on the video element)
-
   title.textContent = d.title;
   wrap.innerHTML = '';
 
-  // Media
-  if (d.video) {
+  // ── Media rendering ──────────────────────────────────────────────────
+  if (d.type === 'svgbouquet') {
+    // Flowers gift: beautiful animated SVG bouquet — no video, music keeps playing
+    media.innerHTML = `
+      <div class="modal-bouquet-header">
+        <span class="bouquet-sparkle" style="top:14px;left:24px;animation-delay:0s">✨</span>
+        <span class="bouquet-sparkle" style="top:20px;right:28px;animation-delay:0.7s">🌟</span>
+        <span class="bouquet-sparkle" style="top:40px;left:52%;animation-delay:1.3s">💫</span>
+        <div class="bouquet-stem-wrap">
+          <!-- Tulip pink far-left -->
+          <svg width="36" height="66" viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg" style="--r:-6deg">
+            <line x1="26" y1="72" x2="26" y2="38" stroke="#5D9A6B" stroke-width="3.5"/>
+            <path d="M26 36 C18 28,10 18,14 8 C18 0,26 4,26 12" fill="#FFB6C1"/>
+            <path d="M26 36 C34 28,42 18,38 8 C34 0,26 4,26 12" fill="#FF90A8"/>
+            <path d="M26 36 C16 24,8 32,12 22 C16 14,24 20,26 28" fill="#FFCDD6"/>
+            <path d="M26 36 C36 24,44 32,40 22 C36 14,28 20,26 28" fill="#FF9DB5"/>
+          </svg>
+          <!-- Lavender left -->
+          <svg width="24" height="76" viewBox="0 0 30 68" xmlns="http://www.w3.org/2000/svg" style="--r:3deg">
+            <line x1="15" y1="68" x2="15" y2="28" stroke="#5D9A6B" stroke-width="2.5"/>
+            <ellipse cx="15" cy="22" rx="5" ry="7" fill="#C084D0" opacity="0.9"/>
+            <ellipse cx="9" cy="30" rx="4" ry="6" fill="#B070C0" opacity="0.85"/>
+            <ellipse cx="21" cy="30" rx="4" ry="6" fill="#C890D8" opacity="0.85"/>
+            <ellipse cx="12" cy="38" rx="3.5" ry="5" fill="#D0A0E0" opacity="0.8"/>
+            <ellipse cx="18" cy="38" rx="3.5" ry="5" fill="#C080D0" opacity="0.8"/>
+          </svg>
+          <!-- Tulip purple mid-left -->
+          <svg width="42" height="86" viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg" style="--r:-2deg">
+            <line x1="26" y1="72" x2="26" y2="38" stroke="#5D9A6B" stroke-width="3.5"/>
+            <path d="M26 36 C18 28,10 18,14 8 C18 0,26 4,26 12" fill="#DDA0DD"/>
+            <path d="M26 36 C34 28,42 18,38 8 C34 0,26 4,26 12" fill="#CC88CC"/>
+            <path d="M26 36 C16 24,8 32,12 22 C16 14,24 20,26 28" fill="#EEC0EE"/>
+            <path d="M26 36 C36 24,44 32,40 22 C36 14,28 20,26 28" fill="#D499D4"/>
+          </svg>
+          <!-- Tallest tulip hot-pink centre -->
+          <svg width="46" height="96" viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg" style="--r:0deg">
+            <line x1="26" y1="72" x2="26" y2="38" stroke="#4A8A5A" stroke-width="4"/>
+            <path d="M26 36 C18 28,10 18,14 8 C18 0,26 4,26 12" fill="#FF6B9D"/>
+            <path d="M26 36 C34 28,42 18,38 8 C34 0,26 4,26 12" fill="#FF4D88"/>
+            <path d="M26 36 C16 24,8 32,12 22 C16 14,24 20,26 28" fill="#FF88B4"/>
+            <path d="M26 36 C36 24,44 32,40 22 C36 14,28 20,26 28" fill="#FF5E98"/>
+          </svg>
+          <!-- Tulip soft pink mid-right -->
+          <svg width="42" height="82" viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg" style="--r:2deg">
+            <line x1="26" y1="72" x2="26" y2="38" stroke="#5D9A6B" stroke-width="3.5"/>
+            <path d="M26 36 C18 28,10 18,14 8 C18 0,26 4,26 12" fill="#FFD0E8"/>
+            <path d="M26 36 C34 28,42 18,38 8 C34 0,26 4,26 12" fill="#FFB8D8"/>
+            <path d="M26 36 C16 24,8 32,12 22 C16 14,24 20,26 28" fill="#FFE0F0"/>
+            <path d="M26 36 C36 24,44 32,40 22 C36 14,28 20,26 28" fill="#FFC8E0"/>
+          </svg>
+          <!-- Lavender right -->
+          <svg width="24" height="72" viewBox="0 0 30 68" xmlns="http://www.w3.org/2000/svg" style="--r:-3deg">
+            <line x1="15" y1="68" x2="15" y2="28" stroke="#5D9A6B" stroke-width="2.5"/>
+            <ellipse cx="15" cy="22" rx="5" ry="7" fill="#9B68C0" opacity="0.9"/>
+            <ellipse cx="9" cy="30" rx="4" ry="6" fill="#8A5AB0" opacity="0.85"/>
+            <ellipse cx="21" cy="30" rx="4" ry="6" fill="#A878D0" opacity="0.85"/>
+            <ellipse cx="12" cy="38" rx="3.5" ry="5" fill="#B888D8" opacity="0.8"/>
+            <ellipse cx="18" cy="38" rx="3.5" ry="5" fill="#9860C0" opacity="0.8"/>
+          </svg>
+          <!-- Tulip coral far-right -->
+          <svg width="36" height="64" viewBox="0 0 52 72" xmlns="http://www.w3.org/2000/svg" style="--r:7deg">
+            <line x1="26" y1="72" x2="26" y2="38" stroke="#6aab78" stroke-width="3"/>
+            <path d="M26 36 C18 28,10 18,14 8 C18 0,26 4,26 12" fill="#FF8C9E"/>
+            <path d="M26 36 C34 28,42 18,38 8 C34 0,26 4,26 12" fill="#FF7088"/>
+            <path d="M26 36 C16 24,8 32,12 22 C16 14,24 20,26 28" fill="#FFA0B2"/>
+            <path d="M26 36 C36 24,44 32,40 22 C36 14,28 20,26 28" fill="#FF8898"/>
+          </svg>
+        </div>
+      </div>`;
+    msg.textContent = d.msg || '';
+
+  } else if (d.video) {
+    // Video gifts (bts, video) — music pauses when video PLAYS, resumes on pause/end
     if (d.videoType === 'local') {
-      media.innerHTML = `<div class="modal-video-wrap"><video controls playsinline onplay="pauseMusicForVideo()" onended="resumeMusicAfterVideo()" onpause="resumeMusicAfterVideo()"><source src="${d.video}" type="video/mp4">Your browser does not support video.</video></div>`;
+      media.innerHTML = `<div class="modal-video-wrap">
+        <video controls playsinline
+          onplay="pauseMusicForVideo()"
+          onpause="resumeMusicAfterVideo()"
+          onended="resumeMusicAfterVideo()">
+          <source src="${d.video}" type="video/mp4">Your browser does not support video.
+        </video>
+      </div>`;
     } else {
       media.innerHTML = `<div class="modal-video-wrap"><iframe src="${d.video}" frameborder="0" allowfullscreen allow="autoplay"></iframe></div>`;
     }
     msg.textContent = d.msg || 'Something special just for you 💜';
+
   } else if (d.img) {
     media.innerHTML = `<div class="modal-img-wrap"><img src="${d.img}" alt="${d.title}" onerror="this.style.display='none';document.getElementById('img-fallback-${key}').style.display='flex'"><div id="img-fallback-${key}" class="modal-emoji-fallback" style="display:none">${d.emoji}</div></div>`;
     msg.textContent = d.msg || '';
+
   } else {
     media.innerHTML = `<div class="modal-img-wrap modal-emoji-header"><div class="modal-emoji-large">${d.emoji}</div></div>`;
     msg.textContent = d.msg || '';
@@ -1129,7 +1229,7 @@ function openGiftModal(key) {
         <div class="coupon-code-box">${d.coupon}</div>
         <div class="coupon-redeem">📲 Redeem karo: 7654339871 pe WhatsApp karo aur yeh code bhejo</div>
         <div class="coupon-tnc">
-          <b>Terms & Conditions (Padho zaroor, seriously):</b><br><br>
+          <b>Terms &amp; Conditions (Padho zaroor, seriously):</b><br><br>
           ${d.funny_tnc ? d.funny_tnc.map((t,i) => `${i+1}. ${t}`).join('<br>') : ''}
           <br><br>
           📅 <b>Expiry:</b> ${d.expiry}<br><br>
@@ -1161,7 +1261,7 @@ function closeModal() {
   document.body.style.overflow = '';
   const vid = overlay.querySelector('video');
   if (vid) { vid.pause(); vid.currentTime = 0; }
-  // Always resume music when closing modal (music was never stopped for non-video gifts)
+  // Resume music when closing modal (in case video was playing)
   if (musicOn) audio.play().catch(() => {});
 }
 
@@ -1204,13 +1304,13 @@ function closePreviewOutside(e) {
   if (e.target === document.getElementById('gift-preview')) closePreview();
 }
 
-// Video gifts that need music pause warning
-const VIDEO_GIFTS = ['bts', 'video', 'flowers'];
+// Video gifts that show the "pause music?" popup
+// NOTE: 'flowers' is removed — it's now an image (SVG bouquet), music keeps playing
+const VIDEO_GIFTS = ['bts', 'video'];
 
 function openFromPreview() {
   const key = _previewKey;
   closePreview();
-  // If it's a video gift and music is playing, show music popup first
   if (VIDEO_GIFTS.includes(key) && musicOn) {
     setTimeout(() => showMusicPopup(key), 80);
   } else {
