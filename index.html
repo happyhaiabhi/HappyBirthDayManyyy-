@@ -939,9 +939,9 @@ function toggleMusic() {
 // Start on first tap anywhere (except music button itself)
 function onFirstInteraction(e) {
   if (e.target.id === 'music-toggle') return;
-  playMusic();
   document.removeEventListener('click',      onFirstInteraction);
   document.removeEventListener('touchstart', onFirstInteraction);
+  setTimeout(() => playMusic(), 100);
 }
 document.addEventListener('click',      onFirstInteraction);
 document.addEventListener('touchstart', onFirstInteraction, { passive: true });
